@@ -44,7 +44,7 @@ static double                                   g_Time = 0.0;
 static ANativeWindow*                           g_Window;
 static char                                     g_LogTag[] = "ImGuiExample";
 
-static ImGuiKey ImGui_ImplAndroid_KeyCodeToImGuiKey(int32_t key_code)
+ImGuiKey ImGui_ImplAndroid_KeyCodeToImGuiKey(int32_t key_code)
 {
     switch (key_code)
     {
@@ -282,13 +282,13 @@ void ImGui_ImplAndroid_Shutdown()
     io.BackendPlatformName = nullptr;
 }
 
-void ImGui_ImplAndroid_NewFrame()
+void ImGui_ImplAndroid_NewFrame(int32_t width, int32_t height)
 {
     ImGuiIO& io = ImGui::GetIO();
 
     // Setup display size (every frame to accommodate for window resizing)
-    int32_t window_width = ANativeWindow_getWidth(g_Window);
-    int32_t window_height = ANativeWindow_getHeight(g_Window);
+    int32_t window_width = !g_Window ? width : ANativeWindow_getWidth(g_Window);
+    int32_t window_height = !g_Window ? height : ANativeWindow_getHeight(g_Window);
     int display_width = window_width;
     int display_height = window_height;
 
