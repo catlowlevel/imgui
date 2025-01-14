@@ -18,6 +18,18 @@
 // If your macro uses multiple statements, make sure is enclosed in a 'do { .. } while (0)' block so it can be used as a single statement.
 //#define IM_ASSERT(_EXPR)  MyAssert(_EXPR)
 //#define IM_ASSERT(_EXPR)  ((void)(_EXPR))     // Disable asserts
+#if defined(__DEBUG__) || defined(DEBUG)
+#include <android/log.h>
+#define IM_ASSERT(_EXPR) do { \
+    if(!(_EXPR)) {\
+        __android_log_print(ANDROID_LOG_INFO, "MXP", "Assertion failed: %s, file %s, line %d", #_EXPR, __FILE__, __LINE__);\
+        __builtin_trap(); \
+    }\
+} while(0)
+#else
+#define IM_ASSERT(_EXPR)
+#define IM_ASSERT_USER_ERROR(_EXPR,_MSG)
+#endif
 
 //---- Define attributes of all API symbols declarations, e.g. for DLL under Windows
 // Using Dear ImGui via a shared library is not recommended, because of function call overhead and because we don't guarantee backward nor forward ABI compatibility.
@@ -117,7 +129,7 @@
 // Your renderer backend will need to support it (most example renderer backends support both 16/32-bit indices).
 // Another way to allow large meshes while keeping 16-bit indices is to handle ImDrawCmd::VtxOffset in your renderer.
 // Read about ImGuiBackendFlags_RendererHasVtxOffset for details.
-//#define ImDrawIdx unsigned int
+#define ImDrawIdx unsigned int
 
 //---- Override ImDrawCallback signature (will need to modify renderer backends accordingly)
 //struct ImDrawList;
