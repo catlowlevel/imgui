@@ -30,6 +30,8 @@
 #else
 #define IM_ASSERT(_EXPR)
 #define IM_ASSERT_USER_ERROR(_EXPR,_MSG)
+#define IM_ASSERT_USER_ERROR_RET(_EXPR,_MSG) do { if (!(_EXPR)) return; } while (0)
+#define IM_ASSERT_USER_ERROR_RETV(_EXPR,_RETV,_MSG) do { if (!(_EXPR)) return _RETV; } while (0)
 #endif
 
 //---- Define attributes of all API symbols declarations, e.g. for DLL under Windows
